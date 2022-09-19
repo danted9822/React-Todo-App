@@ -1,4 +1,4 @@
-import { Heading, Stack, HStack, VStack, IconButton, useColorMode } from '@chakra-ui/react';
+import { Heading, VStack, IconButton, useColorMode } from '@chakra-ui/react';
 import TodoList from './components/TodoList';
 import AddTodo from './components/AddTodo';
 import { MdDarkMode, MdLightMode } from 'react-icons/md';
@@ -9,6 +9,11 @@ function App() {
 
 
   const [todos, setTodos] = useState(() => JSON.parse(localStorage.getItem("todos")) || []);
+
+  const [editItem, setEditItem] = useState(null)
+
+  const { colorMode, toggleColorMode } = useColorMode();
+
 
   useEffect(() => {
 
@@ -24,21 +29,43 @@ function App() {
 
       return todo.id !== id;
 
-    } )
-      setTodos(newTodos)
+    })
+    setTodos(newTodos)
   }
+
+
 
   function addTodo(todo) {
     setTodos([...todos, todo]);
   }
 
-  const {colorMode, toggleColorMode } = useColorMode();
+
+
+  function findTodo(id) {
+    const currentTodo = todos.filter((todo) => todo.id === id);
+
+    console.log("BAZD MEG", currentTodo);
+
+    setEditItem(currentTodo);
+  }
+
+
+  const editTodo = (body, id) => {
+    const newTodo = todos.map(task => (task.id === id ? { body, id } : task))
+
+    console.log(newTodo)
+
+    setTodos(newTodo)
+    setEditItem(null)
+  }
+
+
 
 
   return (
     <VStack p={4}>
       <IconButton
-        icon={colorMode === "light" ? < MdLightMode /> : <MdDarkMode/>}
+        icon={colorMode === "light" ? < MdLightMode /> : <MdDarkMode />}
         isRound="true"
         size="lg"
         alignSelf={'flex-end'}
@@ -51,8 +78,8 @@ function App() {
         bgClip="text">
         Todo Application
       </Heading>
-      <TodoList todos={todos} deleteTodo={deleteTodo} />
-      <AddTodo addTodo={addTodo} />
+      <TodoList todos={todos} deleteTodo={deleteTodo} findTodo={findTodo} />
+      <AddTodo addTodo={addTodo} editTodo={editTodo} editItem={editItem} />
     </VStack>
   );
 }
