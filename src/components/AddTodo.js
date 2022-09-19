@@ -1,7 +1,6 @@
-import { Button, HStack, Input } from '@chakra-ui/react'
+import { Button, HStack, Input, useToast } from '@chakra-ui/react'
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react'
-
 
 
 function AddTodo({ addTodo }) {
@@ -9,16 +8,30 @@ function AddTodo({ addTodo }) {
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!content) {
+      toast({
+        title: 'No content',
+        status: 'error',
+        duration: 2000,
+        isClosable: true,
+      });
+      return;
+    }
+
     const todo = {
       id: nanoid(),
       body: content
     }
 
     addTodo(todo)
+    setContent('')
 
   }
 
-  const [content, setContent] = useState("")
+  
+const toast = useToast()
+
+const [content, setContent] = useState("")
 
   return (
     <form onSubmit={handleSubmit}>
