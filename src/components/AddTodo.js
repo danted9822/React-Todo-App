@@ -68,7 +68,7 @@ function AddTodo({ addTodo, editTodo, editItem }) {
           bgColor={"#E94B3CFF"}
           px="8"
           type='submit'>
-          {editItem ? 'Edit Todo' : 'Add Todo'}
+          {editItem ? 'Edit' : 'Add'}
         </Button>
       </HStack>
 

@@ -14,6 +14,9 @@ function App() {
 
   const { colorMode, toggleColorMode } = useColorMode();
 
+  useEffect(() => {
+    document.title = "hpeter-todo-app";
+  }, []);
 
   useEffect(() => {
 
